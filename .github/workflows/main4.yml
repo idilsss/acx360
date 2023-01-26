@@ -1,0 +1,24 @@
+name: Acunetix workflow
+
+on:
+    push:
+      branches: [main]
+      
+jobs:
+  acunetix_scan_job:
+      runs-on: ubuntu-20.04
+      steps:
+        # Starts actions with given inputs
+        - name: Start Acunetix 360 Scan
+          uses: Acunetix360/Acunetix-360-GitHub-Actions@v0.0.1
+          id: acunetix-360-scan-step
+          with:
+            website-id: 'ae5cdfad-0c4f-45e3-c289-aee60194319e'
+            scan-type: 'FullWithSelectedProfile'
+            profile-id: 'e15e9ede-6a15-4d91-c9b9-af9502e56c98'
+            user-id: ${{ secrets.ACUNETIX_USER_ID }}
+            api-token: ${{ secrets.ACUNETIX_API_TOKEN }}
+            base-url: 'https://online.acunetix360.com'
+        # Displays output for action
+        - name: Display Scan Request Message
+          run: echo "${{ steps.acunetix-360-scan-step.outputs.scan-message }}"
